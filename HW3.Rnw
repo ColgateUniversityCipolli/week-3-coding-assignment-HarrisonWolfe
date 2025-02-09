@@ -51,8 +51,66 @@ to this \texttt{.Rnw} file.\\
 % Write your answer and explanations here.
 
 <<size="scriptsize", warning=F, message=F>>=
-# Copy your solution code here.
+
+
+# All the possible prime numbers
+prime.numbers = 2:100
+
+# Outer loop to find all numbers from 2 to 100
+for (i in 1:100) {
+  # Inner loop to check if it can go evenly into each number by numbers smaller than itself
+  for (x in 2:(i-1)) {#Loop through everything smaller than i
+    # If it can be divided by things that are smaller than it than it is not prime so we get rid of everything that can 
+    #do that
+    prime.numbers = prime.numbers[prime.numbers != i | i %% x != 0]
+    #Only doesn't add 2??
+  }
+}
+
+#Adding 2
+prime.numbers = c(prime.numbers, 2)
+prime.numbers = sort(prime.numbers)
+
+#Making all the values we need to check into a dataframe
+numbers.to.check = outer(prime.numbers,prime.numbers, FUN = "*")
+
+#Making into matrix to turn into a vector
+matrix.for.numbers = as.matrix(numbers.to.check)
+
+#Turning into vector
+vector.of.numbers.to.check = c(matrix.for.numbers)
+
+#Removing the squares and duplicates
+vector.of.numbers.to.check = unique(vector.of.numbers.to.check)
+
+x = 1:100
+y = x^2
+
+vector.of.numbers.to.check = vector.of.numbers.to.check[-which(vector.of.numbers.to.check %in% y)]
+vector.of.numbers.to.check = sort(vector.of.numbers.to.check)
+
+#Adding the original problem
+
+original.numbers = c(6 , 10 , 14 , 15 , 21,
+                     22 , 26 , 33 , 34 , 35,
+                     38 , 39 , 46 , 51 , 55,
+                     57 , 58 , 62 , 65 , 69,
+                     75 , 77 , 82 , 85 , 86,
+                     87 , 91 , 93 , 94 , 95)
+
+#Finding the one that does not belong
+
+original.numbers[-which(original.numbers %in% vector.of.numbers.to.check)]
+
+#Finding the one to add back in
+
+vector.of.numbers.to.check = vector.of.numbers.to.check[which(vector.of.numbers.to.check < 100)] #Sorting below 100
+
+vector.of.numbers.to.check[-which(vector.of.numbers.to.check %in% original.numbers)]
+
 @
+\textbf{Reasoning:} 75 should not be in this vector because it can be broken down into 25 and 3 and 25 is not prime. 74 should replace it because it can be broken down into 37 and 2 which are both prime numbers. 
+
 \end{enumerate}
 
 \bibliography{bibliography}

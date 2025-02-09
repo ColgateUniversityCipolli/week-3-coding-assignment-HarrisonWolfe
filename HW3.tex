@@ -103,10 +103,72 @@ to this \texttt{.Rnw} file.\\
 \begin{knitrout}\scriptsize
 \definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\begin{kframe}
 \begin{alltt}
-\hlcom{# Copy your solution code here.}
+\hlcom{# All the possible prime numbers}
+\hldef{prime.numbers} \hlkwb{<-} \hlnum{2}\hlopt{:}\hlnum{100}
+
+\hlcom{# Outer loop to find all numbers from 2 to 100}
+\hlkwa{for} \hldef{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{100}\hldef{) \{}
+  \hlcom{# Inner loop to check if it can go evenly into each number by numbers smaller than itself}
+  \hlkwa{for} \hldef{(x} \hlkwa{in} \hlnum{2}\hlopt{:}\hldef{(i}\hlopt{-}\hlnum{1}\hldef{)) \{}\hlcom{#Loop through everything smaller than i}
+    \hlcom{# If it can be divided by things that are smaller than it than it is not prime so we get rid of everything that can }
+    \hlcom{#do that}
+    \hldef{prime.numbers} \hlkwb{=} \hldef{prime.numbers[prime.numbers} \hlopt{!=} \hldef{i} \hlopt{|} \hldef{i} \hlopt{%%} \hldef{x} \hlopt{!=} \hlnum{0}\hldef{]}
+    \hlcom{#Only doesn't add 2??}
+  \hldef{\}}
+\hldef{\}}
+
+\hlcom{#Adding 2}
+\hldef{prime.numbers} \hlkwb{=} \hlkwd{c}\hldef{(prime.numbers,} \hlnum{2}\hldef{)}
+\hldef{prime.numbers} \hlkwb{=} \hlkwd{sort}\hldef{(prime.numbers)}
+
+\hlcom{#Making all the values we need to check into a dataframe}
+\hldef{numbers.to.check} \hlkwb{=} \hlkwd{outer}\hldef{(prime.numbers,prime.numbers,} \hlkwc{FUN} \hldef{=} \hlsng{"*"}\hldef{)}
+
+\hlcom{#Making into matrix to turn into a vector}
+\hldef{matrix.for.numbers} \hlkwb{=} \hlkwd{as.matrix}\hldef{(numbers.to.check)}
+
+\hlcom{#Turning into vector}
+\hldef{vector.of.numbers.to.check} \hlkwb{=} \hlkwd{c}\hldef{(matrix.for.numbers)}
+
+\hlcom{#Removing the squares and duplicates}
+\hldef{vector.of.numbers.to.check} \hlkwb{=} \hlkwd{unique}\hldef{(vector.of.numbers.to.check)}
+
+\hldef{x} \hlkwb{=} \hlnum{1}\hlopt{:}\hlnum{100}
+\hldef{y} \hlkwb{=} \hldef{x}\hlopt{^}\hlnum{2}
+
+\hldef{vector.of.numbers.to.check} \hlkwb{=} \hldef{vector.of.numbers.to.check[}\hlopt{-}\hlkwd{which}\hldef{(vector.of.numbers.to.check} \hlopt{%in%} \hldef{y)]}
+\hldef{vector.of.numbers.to.check} \hlkwb{=} \hlkwd{sort}\hldef{(vector.of.numbers.to.check)}
+
+\hlcom{#Adding the original problem}
+
+\hldef{original.numbers} \hlkwb{=} \hlkwd{c}\hldef{(}\hlnum{6} \hldef{,} \hlnum{10} \hldef{,} \hlnum{14} \hldef{,} \hlnum{15} \hldef{,} \hlnum{21}\hldef{,}
+                     \hlnum{22} \hldef{,} \hlnum{26} \hldef{,} \hlnum{33} \hldef{,} \hlnum{34} \hldef{,} \hlnum{35}\hldef{,}
+                     \hlnum{38} \hldef{,} \hlnum{39} \hldef{,} \hlnum{46} \hldef{,} \hlnum{51} \hldef{,} \hlnum{55}\hldef{,}
+                     \hlnum{57} \hldef{,} \hlnum{58} \hldef{,} \hlnum{62} \hldef{,} \hlnum{65} \hldef{,} \hlnum{69}\hldef{,}
+                     \hlnum{75} \hldef{,} \hlnum{77} \hldef{,} \hlnum{82} \hldef{,} \hlnum{85} \hldef{,} \hlnum{86}\hldef{,}
+                     \hlnum{87} \hldef{,} \hlnum{91} \hldef{,} \hlnum{93} \hldef{,} \hlnum{94} \hldef{,} \hlnum{95}\hldef{)}
+
+\hlcom{#Finding the one that does not belong}
+
+\hldef{original.numbers[}\hlopt{-}\hlkwd{which}\hldef{(original.numbers} \hlopt{%in%} \hldef{vector.of.numbers.to.check)]}
 \end{alltt}
+\begin{verbatim}
+## [1] 75
+\end{verbatim}
+\begin{alltt}
+\hlcom{#Finding the one to add back in}
+
+\hldef{vector.of.numbers.to.check} \hlkwb{=} \hldef{vector.of.numbers.to.check[}\hlkwd{which}\hldef{(vector.of.numbers.to.check} \hlopt{<} \hlnum{100}\hldef{)]} \hlcom{#Sorting below 100}
+
+\hldef{vector.of.numbers.to.check[}\hlopt{-}\hlkwd{which}\hldef{(vector.of.numbers.to.check} \hlopt{%in%} \hldef{original.numbers)]}
+\end{alltt}
+\begin{verbatim}
+## [1] 74
+\end{verbatim}
 \end{kframe}
 \end{knitrout}
+\textbf{Reasoning:} 75 should not be in this vector because it can be broken down into 25 and 3 and 25 is not prime. 74 should replace it because it can be broken down into 37 and 2 which are both prime numbers. 
+
 \end{enumerate}
 
 \bibliography{bibliography}
