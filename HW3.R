@@ -13,6 +13,9 @@ for (i in 1:100) {
   }
 }
 
+i <- 1
+2:0
+
 #Adding 2
 prime.numbers = c(prime.numbers, 2)
 prime.numbers = sort(prime.numbers)

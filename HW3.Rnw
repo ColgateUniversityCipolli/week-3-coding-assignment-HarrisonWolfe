@@ -59,11 +59,14 @@ prime.numbers <- 2:100
 for (i in 1:100) {
   # Inner loop to check if it can go evenly into each number by numbers smaller than itself
   for (x in 2:(i-1)) {#Loop through everything smaller than i
-    # If it can be divided by things that are smaller than it than it is not prime so we get rid of everything that can do that
+    # If it can be divided by things that are smaller than it than it is not prime so we get rid of everything that 
+    #can do that
     prime.numbers = prime.numbers[prime.numbers != i | i %% x != 0]
-    #Only doesn't add 2??
+    #Only doesn't add 2
   }
 }
+#Would've just done c(...) but thought we had to code it
+
 
 #Adding 2
 prime.numbers = c(prime.numbers, 2)
@@ -112,7 +115,7 @@ num.to.check = num.to.check[which(num.to.check < 100)] #Sorting below 100
 num.to.check[-which(num.to.check %in% original.numbers)]
 
 @
-\textbf{Reasoning:} 75 should not be in this vector because it can be broken down into 25 and 3 and 25 is not prime. 74 should replace it because it can be broken down into 37 and 2 which are both prime numbers. 
+\textbf{Reasoning:} 75 should \textbf{not} be in this set of numbers because it can be broken down into 25 and 3 and 25 is not prime. 74 \textbf{should} replace it because it can be broken down into 37 and 2 which are both prime numbers. 
 
 \end{enumerate}
 

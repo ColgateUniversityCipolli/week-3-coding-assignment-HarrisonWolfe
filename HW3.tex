@@ -110,34 +110,41 @@ to this \texttt{.Rnw} file.\\
 \hlkwa{for} \hldef{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlnum{100}\hldef{) \{}
   \hlcom{# Inner loop to check if it can go evenly into each number by numbers smaller than itself}
   \hlkwa{for} \hldef{(x} \hlkwa{in} \hlnum{2}\hlopt{:}\hldef{(i}\hlopt{-}\hlnum{1}\hldef{)) \{}\hlcom{#Loop through everything smaller than i}
-    \hlcom{# If it can be divided by things that are smaller than it than it is not prime so we get rid of everything that can }
-    \hlcom{#do that}
+    \hlcom{# If it can be divided by things that are smaller than it than it is not prime so we get rid of everything that }
+    \hlcom{#can do that}
     \hldef{prime.numbers} \hlkwb{=} \hldef{prime.numbers[prime.numbers} \hlopt{!=} \hldef{i} \hlopt{|} \hldef{i} \hlopt{%%} \hldef{x} \hlopt{!=} \hlnum{0}\hldef{]}
-    \hlcom{#Only doesn't add 2??}
+    \hlcom{#Only doesn't add 2}
   \hldef{\}}
 \hldef{\}}
+\hlcom{#Would've just done c(...) but thought we had to code it}
+
 
 \hlcom{#Adding 2}
 \hldef{prime.numbers} \hlkwb{=} \hlkwd{c}\hldef{(prime.numbers,} \hlnum{2}\hldef{)}
 \hldef{prime.numbers} \hlkwb{=} \hlkwd{sort}\hldef{(prime.numbers)}
 
-\hlcom{#Making all the values we need to check into a dataframe}
-\hldef{numbers.to.check} \hlkwb{=} \hlkwd{outer}\hldef{(prime.numbers,prime.numbers,} \hlkwc{FUN} \hldef{=} \hlsng{"*"}\hldef{)}
+\hlcom{#Making the products into a vector}
 
-\hlcom{#Making into matrix to turn into a vector}
-\hldef{matrix.for.numbers} \hlkwb{=} \hlkwd{as.matrix}\hldef{(numbers.to.check)}
+\hldef{num.to.check}\hlkwb{=}\hlkwd{c}\hldef{()}
 
-\hlcom{#Turning into vector}
-\hldef{vector.of.numbers.to.check} \hlkwb{=} \hlkwd{c}\hldef{(matrix.for.numbers)}
+\hlkwa{for}\hldef{(i} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hldef{(prime.numbers))\{}
+  \hlkwa{for}\hldef{(x} \hlkwa{in} \hlnum{1}\hlopt{:}\hlkwd{length}\hldef{(prime.numbers))\{}
+    \hldef{num.to.check} \hlkwb{=} \hlkwd{c}\hldef{(num.to.check, prime.numbers[i]}\hlopt{*}\hldef{prime.numbers[x])}
+
+  \hldef{\}}
+\hldef{\}}
+
+\hldef{num.to.check} \hlkwb{=} \hlkwd{sort}\hldef{(num.to.check)}
+
 
 \hlcom{#Removing the squares and duplicates}
-\hldef{vector.of.numbers.to.check} \hlkwb{=} \hlkwd{unique}\hldef{(vector.of.numbers.to.check)}
+\hldef{num.to.check} \hlkwb{=} \hlkwd{unique}\hldef{(num.to.check)}
 
 \hldef{x} \hlkwb{=} \hlnum{1}\hlopt{:}\hlnum{100}
 \hldef{y} \hlkwb{=} \hldef{x}\hlopt{^}\hlnum{2}
 
-\hldef{vector.of.numbers.to.check} \hlkwb{=} \hldef{vector.of.numbers.to.check[}\hlopt{-}\hlkwd{which}\hldef{(vector.of.numbers.to.check} \hlopt{%in%} \hldef{y)]}
-\hldef{vector.of.numbers.to.check} \hlkwb{=} \hlkwd{sort}\hldef{(vector.of.numbers.to.check)}
+\hldef{num.to.check} \hlkwb{=} \hldef{num.to.check[}\hlopt{-}\hlkwd{which}\hldef{(num.to.check} \hlopt{%in%} \hldef{y)]}
+\hldef{num.to.check} \hlkwb{=} \hlkwd{sort}\hldef{(num.to.check)}
 
 \hlcom{#Adding the original problem}
 
@@ -150,7 +157,7 @@ to this \texttt{.Rnw} file.\\
 
 \hlcom{#Finding the one that does not belong}
 
-\hldef{original.numbers[}\hlopt{-}\hlkwd{which}\hldef{(original.numbers} \hlopt{%in%} \hldef{vector.of.numbers.to.check)]}
+\hldef{original.numbers[}\hlopt{-}\hlkwd{which}\hldef{(original.numbers} \hlopt{%in%} \hldef{num.to.check)]}
 \end{alltt}
 \begin{verbatim}
 ## [1] 75
@@ -158,16 +165,16 @@ to this \texttt{.Rnw} file.\\
 \begin{alltt}
 \hlcom{#Finding the one to add back in}
 
-\hldef{vector.of.numbers.to.check} \hlkwb{=} \hldef{vector.of.numbers.to.check[}\hlkwd{which}\hldef{(vector.of.numbers.to.check} \hlopt{<} \hlnum{100}\hldef{)]} \hlcom{#Sorting below 100}
+\hldef{num.to.check} \hlkwb{=} \hldef{num.to.check[}\hlkwd{which}\hldef{(num.to.check} \hlopt{<} \hlnum{100}\hldef{)]} \hlcom{#Sorting below 100}
 
-\hldef{vector.of.numbers.to.check[}\hlopt{-}\hlkwd{which}\hldef{(vector.of.numbers.to.check} \hlopt{%in%} \hldef{original.numbers)]}
+\hldef{num.to.check[}\hlopt{-}\hlkwd{which}\hldef{(num.to.check} \hlopt{%in%} \hldef{original.numbers)]}
 \end{alltt}
 \begin{verbatim}
 ## [1] 74
 \end{verbatim}
 \end{kframe}
 \end{knitrout}
-\textbf{Reasoning:} 75 should not be in this vector because it can be broken down into 25 and 3 and 25 is not prime. 74 should replace it because it can be broken down into 37 and 2 which are both prime numbers. 
+\textbf{Reasoning:} 75 should \textbf{not} be in this set of numbers because it can be broken down into 25 and 3 and 25 is not prime. 74 \textbf{should} replace it because it can be broken down into 37 and 2 which are both prime numbers. 
 
 \end{enumerate}
 
